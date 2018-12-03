@@ -140,7 +140,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ListView(
             primary: false,
             shrinkWrap: true,
+            padding: EdgeInsets.only(top: 5.0),
             children: <Widget>[
+              _buildTripImagesGrid(),
+              _buildTripDetailsInfo(),
               _buildTripImagesGrid(),
               _buildTripDetailsInfo(),
             ],
@@ -152,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _buildTripDetailsInfo() {
     return Padding(
-      padding: EdgeInsets.only(top: 20.0),
+      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
