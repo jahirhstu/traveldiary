@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'services.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +21,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<DocumentSnapshot> travelData;
+
+  @override
+  void initState() {
+    super.initState();
+    travelData = new List<DocumentSnapshot>();
+    TravelDataService().getTravelData().listen((QuerySnapshot snapshot) {
+      var firestoreDocuments = snapshot.documents;
+      setState(() {
+        travelData = firestoreDocuments;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,23 +153,41 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          ListView(
-            primary: false,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 5.0),
-            children: <Widget>[
-              _buildTripImagesGrid(),
-              _buildTripDetailsInfo(),
-              _buildTripImagesGrid(),
-              _buildTripDetailsInfo(),
-            ],
-          ),
+          _buildGrid()
         ],
       ),
     );
   }
 
-  _buildTripDetailsInfo() {
+  _buildGrid() {
+    var images = [
+      "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/beach1.jpg?alt=media&token=2c5262ab-f88b-43ae-b3de-82f7af6db0ed",
+      "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/benagil-sea-cave-algarve-portugal-cr-getty.jpg?alt=media&token=3a558e68-a61a-4fc3-98e2-64f6590ba8d4",
+      "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/boracay-willys-rock-GettyImages-112269463.jpg?alt=media&token=1a2a4d74-36a1-47fc-9e4c-a4419ee3fc3d"
+    ];
+    return ListView(
+      primary: false,
+      shrinkWrap: true,
+      children: <Widget>[_buildTripImagesGrid(images)],
+    );
+    // return ListView.builder(
+    //   primary: false,
+    //   shrinkWrap: true,
+    //   itemCount: travelData.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     var travelInfo = travelData[index];
+    //     var images = List.from(travelInfo['images']);
+    //     var owner = travelInfo['owner'].toString();
+    //     var tripname = travelInfo['tripname'].toString();
+    //     var uploadedAt = DateTime.parse(travelInfo['uploadedAt'].toString());
+    //     //_buildTripImagesGrid(images);
+    //     _buildTripDetailsInfo(images.length, tripname, owner, uploadedAt);
+    //   },
+    // );
+  }
+
+  _buildTripDetailsInfo(
+      int numberOfImages, String tripname, String owner, DateTime uploadedAt) {
     return Padding(
       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Row(
@@ -165,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Maui Summer 2018',
+                tripname,
                 style: TextStyle(
                     fontFamily: 'Quicksand',
                     fontWeight: FontWeight.bold,
@@ -175,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 children: <Widget>[
                   Text(
-                    'Teressa sood added 52 photos',
+                    '$owner added $numberOfImages photos',
                     style: TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 10.0,
@@ -184,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      '2h ago',
+                      "${uploadedAt.difference(DateTime.now())} ago",
                       style: TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 8.0,
@@ -205,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _buildTripImagesGrid() {
+  _buildTripImagesGrid(List<String> images) {
     return Row(
       children: <Widget>[
         Container(
@@ -216,9 +250,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   topLeft: Radius.circular(10.0),
                   bottomLeft: Radius.circular(10.0)),
               image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage("assets/images/beach1.jpg"),
-              )),
+                  fit: BoxFit.cover,
+                  image: NetworkImage(images[0]
+                      .toString()) //AssetImage("assets/images/beach1.jpg"),
+                  )),
         ),
         SizedBox(width: 2.0),
         Column(
@@ -230,9 +265,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius:
                       BorderRadius.only(topRight: Radius.circular(10.0)),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/beach2.jpg"),
-                  )),
+                      fit: BoxFit.cover,
+                      image: NetworkImage(images[1]
+                          .toString()) //AssetImage("assets/images/beach2.jpg"),
+                      )),
             ),
             SizedBox(height: 2.0),
             Container(
@@ -242,9 +278,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius:
                       BorderRadius.only(bottomRight: Radius.circular(10.0)),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/beach3.jpg"),
-                  )),
+                      fit: BoxFit.cover,
+                      image: NetworkImage(images[2]
+                          .toString()) //AssetImage("assets/images/beach3.jpg"),
+                      )),
             )
           ],
         )
