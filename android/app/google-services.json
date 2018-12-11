@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1048364759108",
+    "firebase_url": "https://testproject-bc027.firebaseio.com",
+    "project_id": "testproject-bc027",
+    "storage_bucket": "testproject-bc027.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048364759108:android:b0ed7a3e78046a81",
+        "android_client_info": {
+          "package_name": "com.example.travlediary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048364759108-7ccf2bgt47uv00b4vf5brmkcj9auit96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa19Z_D75TKM4S4M6Adzu1bRgGxwos4mg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
