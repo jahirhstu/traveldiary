@@ -165,25 +165,29 @@ class _MyHomePageState extends State<MyHomePage> {
       "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/benagil-sea-cave-algarve-portugal-cr-getty.jpg?alt=media&token=3a558e68-a61a-4fc3-98e2-64f6590ba8d4",
       "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/boracay-willys-rock-GettyImages-112269463.jpg?alt=media&token=1a2a4d74-36a1-47fc-9e4c-a4419ee3fc3d"
     ];
-    return ListView(
-      primary: false,
-      shrinkWrap: true,
-      children: <Widget>[_buildTripImagesGrid(images)],
-    );
-    // return ListView.builder(
+    // var tripname = "Cox's Bazar 2018";
+    // var owner = "Gangoffour";
+    // var uploadedAt = DateTime.now();
+    // return ListView(
     //   primary: false,
     //   shrinkWrap: true,
-    //   itemCount: travelData.length,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     var travelInfo = travelData[index];
-    //     var images = List.from(travelInfo['images']);
-    //     var owner = travelInfo['owner'].toString();
-    //     var tripname = travelInfo['tripname'].toString();
-    //     var uploadedAt = DateTime.parse(travelInfo['uploadedAt'].toString());
-    //     //_buildTripImagesGrid(images);
-    //     _buildTripDetailsInfo(images.length, tripname, owner, uploadedAt);
-    //   },
+    //   children: <Widget>[//_buildTripImagesGrid(images),
+    //   _buildTripDetailsInfo(images.length, tripname, owner, uploadedAt)],
     // );
+    return ListView.builder(
+      primary: false,
+      shrinkWrap: true,
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        var travelInfo = travelData[index];
+        //var images = images;
+        var owner = travelInfo['owner'].toString();
+        var tripname = travelInfo['tripname'].toString();
+        var uploadedAt = DateTime.parse(travelInfo['uploadedAt'].toString());
+        //_buildTripImagesGrid(images);
+        _buildTripDetailsInfo(images.length, tripname, owner, uploadedAt);
+      },
+    );
   }
 
   _buildTripDetailsInfo(
