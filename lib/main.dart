@@ -160,38 +160,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _buildGrid() {
-    var images = [
-      "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/beach1.jpg?alt=media&token=2c5262ab-f88b-43ae-b3de-82f7af6db0ed",
-      "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/benagil-sea-cave-algarve-portugal-cr-getty.jpg?alt=media&token=3a558e68-a61a-4fc3-98e2-64f6590ba8d4",
-      "https://firebasestorage.googleapis.com/v0/b/testproject-bc027.appspot.com/o/boracay-willys-rock-GettyImages-112269463.jpg?alt=media&token=1a2a4d74-36a1-47fc-9e4c-a4419ee3fc3d"
-    ];
-    // var tripname = "Cox's Bazar 2018";
-    // var owner = "Gangoffour";
-    // var uploadedAt = DateTime.now();
-    // return ListView(
-    //   primary: false,
-    //   shrinkWrap: true,
-    //   children: <Widget>[//_buildTripImagesGrid(images),
-    //   _buildTripDetailsInfo(images.length, tripname, owner, uploadedAt)],
-    // );
     return ListView.builder(
       primary: false,
       shrinkWrap: true,
       itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
         var travelInfo = travelData[index];
-        //var images = images;
+        var images = List.from(travelInfo['images']);
         var owner = travelInfo['owner'].toString();
         var tripname = travelInfo['tripname'].toString();
-        var uploadedAt = DateTime.parse(travelInfo['uploadedAt'].toString());
-        //_buildTripImagesGrid(images);
-        _buildTripDetailsInfo(images.length, tripname, owner, uploadedAt);
+        var uploadedAt = DateTime.tryParse(travelInfo['uploadedAt'].toString());
+        return _buildTripDetailsInfo(images, tripname, owner, uploadedAt);
       },
     );
   }
 
   _buildTripDetailsInfo(
-      int numberOfImages, String tripname, String owner, DateTime uploadedAt) {
+      List<dynamic> images, String tripname, String owner, DateTime uploadedAt) {
+    var addedHour =
+        uploadedAt != null ? DateTime.now().difference(uploadedAt).inDays : 0;
     return Padding(
       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Row(
@@ -213,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 children: <Widget>[
                   Text(
-                    '$owner added $numberOfImages photos',
+                    '$owner added ${images.length} photos',
                     style: TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 10.0,
@@ -222,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "${uploadedAt.difference(DateTime.now())} ago",
+                      "$addedHour days ago",
                       style: TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 8.0,
@@ -238,12 +225,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ImageIcon(AssetImage('assets/images/navarrow.png')),
           ImageIcon(AssetImage('assets/images/fav.png')),
           ImageIcon(AssetImage('assets/images/speechbubble.png')),
+          _buildTripImagesGrid(images)
         ],
       ),
     );
   }
 
-  _buildTripImagesGrid(List<String> images) {
+  _buildTripImagesGrid(List<dynamic> images) {
     return Row(
       children: <Widget>[
         Container(
